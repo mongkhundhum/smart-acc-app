@@ -43,10 +43,10 @@ jobs:
           # สร้างโฟลเดอร์ Payload และนำแอปไปแพ็กเป็น .ipa ตามมาตรฐานของ iOS
           mkdir -p Payload
           cp -r $GITHUB_WORKSPACE/build/App.app Payload/
-          zip -r SmartAcc.ipa Payload
+          zip -r KPT-kds.ipa Payload
 
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SmartAcc-SideStore-IPA
-          path: SmartAcc.ipa
+          name: KPT-kds
+          path: KPT-kds.ipa

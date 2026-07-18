@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-13 # รันบนเครื่อง Mac บนคลาวด์ของ GitHub
+    runs-on: macos-14 # อัปเดตเป็น macOS 14 (Apple Silicon M-series Core)
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -26,7 +26,6 @@ jobs:
       - name: Compile iOS Project to .app
         run: |
           # บิลด์แอปแบบไม่ใช้ใบรับรอง Apple Developer
-          # กำหนดให้ build output ไปอยู่ที่โฟลเดอร์ build นอกสุดของโปรเจกต์เพื่อให้จัดการง่าย
           xcodebuild -workspace ios/App/App.xcworkspace \
                      -scheme App \
                      -configuration Release \

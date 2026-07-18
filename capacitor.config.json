@@ -1,0 +1,6 @@
+{
+  "appId": "com.pinto.smartacc",
+  "appName": "SmartAcc",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

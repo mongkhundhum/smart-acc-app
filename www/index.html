@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klong Pinto - Premium Kitchen Display System</title>
+    <!-- Favicon Data URI to prevent 404 error and add a premium culinary icon -->
+    <link rel="icon" type="image/png"href="https://img2.pic.in.th/Klong-Pin-To-37.253-x-20.32-cm.png">
+    <link rel="apple-touch-icon" href="href="https://img2.pic.in.th/Klong-Pin-To-37.253-x-20.32-cm.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Kanit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+	@font-face {
+    		font-family: 'Kanit';
+    		src: url('fonts/Kanit-Regular.ttf') format('truetype');
+   		font-weight: 400;
+	}
+	@font-face {
+   		 font-family: 'Kanit';
+   		 src: url('fonts/Kanit-Bold.ttf') format('truetype');
+   		 font-weight: 700;
+	}
+        body {
+            font-family: 'Kanit', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Custom Scrollbar for elegant look */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        /* SLA Warn Blinking Keyframe */
+        @keyframes sla-blink {
+            0%, 100% { background-color: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.8); }
+            50% { background-color: rgba(239, 68, 68, 0.03); border-color: rgba(239, 68, 68, 0.2); }
+        }
+        .sla-alert-card {
+            animation: sla-blink 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 flex flex-col overflow-hidden">
+
+    <!-- Top Premium Navigation Header -->
+    <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-3 flex-none flex flex-wrap items-center justify-between gap-4 shadow-sm z-10">
+        <div class="flex items-center space-x-3">
+            <div class="bg-amber-500 text-white p-2.5 rounded-2xl shadow-lg shadow-amber-500/20 flex items-center justify-center">
+                <!-- Premium Custom SVG Kitchen Logo -->
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-amber-600 to-amber-500 dark:from-amber-400 dark:to-yellow-300 bg-clip-text text-transparent">
+                    ระบบห้องครัวร้านกล่องปิ่นโต
+                </h1>
+                <p class="text-xs text-slate-400 dark:text-slate-500 font-medium">Kitchen Display System </p>
+            </div>
+        </div>
+
+        <!-- System Stats Hub -->
+        <div class="hidden lg:flex items-center space-x-6 text-sm">
+            <div class="bg-slate-100 dark:bg-slate-800/60 px-4 py-2 rounded-xl flex items-center space-x-3">
+                <span class="flex h-2.5 w-2.5 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
+                <span class="font-medium text-slate-600 dark:text-slate-300" id="sync-status">ซิงค์อัตโนมัติ: เปิดใช้งาน</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="text-center border-r border-slate-200 dark:border-slate-800 pr-4">
+                    <span class="block text-xs text-slate-400">ลงบิลแล้ว</span>
+                    <span class="text-lg font-bold text-blue-500" id="stat-billed">0</span>
+                </div>
+                <div class="text-center border-r border-slate-200 dark:border-slate-800 pr-4">
+                    <span class="block text-xs text-slate-400">กำลังปรุง</span>
+                    <span class="text-lg font-bold text-amber-500" id="stat-cooking">0</span>
+                </div>
+                <div class="text-center border-r border-slate-200 dark:border-slate-800 pr-4">
+                    <span class="block text-xs text-slate-400">รอส่งอาหาร</span>
+                    <span class="text-lg font-bold text-emerald-500" id="stat-ready">0</span>
+                </div>
+                <div class="text-center">
+                    <span class="block text-xs text-slate-400 font-semibold text-slate-400">เสร็จวันนี้</span>
+                    <span class="text-lg font-bold text-slate-500 dark:text-slate-400" id="stat-completed">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls Side & Clock -->
+        <div class="flex items-center gap-3">
+            <div class="text-right hidden sm:block mr-2">
+                <p id="live-time" class="text-sm font-bold tracking-wider text-slate-700 dark:text-slate-200">00:00:00</p>
+                <p id="live-date" class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">รอโหลดวันที่...</p>
+            </div>
+            
+            <!-- Dark/Light Toggle -->
+            <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-400 transition-all duration-200" title="เปลี่ยนโหมดสี">
+                <i class="fa-solid fa-moon dark:hidden"></i>
+                <i class="fa-solid fa-sun hidden dark:block"></i>
+            </button>
+
+            <!-- Configuration Trigger Button -->
+            <button onclick="toggleModal('config-modal')" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-400 transition-all duration-200" title="ตั้งค่าระบบ">
+                <i class="fa-solid fa-sliders"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Sub-Navbar: Filters, Search & Inline Menu Summary Aggregator (Green Line Spot) -->
+    <section class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-3 flex-none flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between shadow-sm">
+        <!-- Live Filter Control Grid -->
+        <div class="flex flex-wrap items-center gap-3 flex-1 min-w-0">
+            <!-- Search input -->
+            <div class="relative w-full sm:w-56 shrink-0">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                    <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                </span>
+                <input type="text" id="search-filter" oninput="applyFiltersAndRender()" placeholder="ค้นหารหัสออเดอร์, เมนู..." class="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-850 text-xs rounded-xl border border-slate-200 dark:border-slate-750 focus:outline-none focus:border-amber-500 dark:focus:border-amber-500 transition-all">
+            </div>
+
+            <!-- Date View Filter Toggle -->
+            <div class="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-semibold shrink-0">
+                <button onclick="setDateRange('today')" id="date-btn-today" class="px-3 py-1.5 rounded-lg transition-all text-amber-600 bg-white dark:bg-slate-900 shadow-sm">วันนี้</button>
+                <button onclick="setDateRange('all')" id="date-btn-all" class="px-3 py-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-all">ทั้งหมด</button>
+                <button onclick="toggleModal('custom-date-modal')" id="date-btn-custom" class="px-3 py-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-all flex items-center space-x-1">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span id="custom-date-label">ระบุวัน</span>
+                </button>
+            </div>
+
+            <!-- Sort Direction Filter Toggle -->
+            <div class="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-semibold shrink-0">
+                <button onclick="setSortOrder('fifo')" id="sort-btn-fifo" class="px-3 py-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-all" title="First In First Out">คิวเก่าสุดก่อน</button>
+                <button onclick="setSortOrder('lifo')" id="sort-btn-lifo" class="px-3 py-1.5 rounded-lg transition-all text-amber-600 bg-white dark:bg-slate-900 shadow-sm" title="Last In First Out">คิวใหม่สุดก่อน</button>
+            </div>
+
+            <!-- GREEN LINE POSITION: Real-time Inline Menu Item Summary Widget -->
+            <div id="aggregated-menu-list" class="flex items-center space-x-2 overflow-x-auto select-none py-1 flex-1 pr-4 min-w-0">
+                <span class="text-slate-400 text-xs font-light">ไม่มีรายการอาหารค้างปรุงในขณะนี้</span>
+            </div>
+        </div>
+
+        <!-- Reset & Re-sync Manual Actions -->
+        <div class="flex items-center gap-2 shrink-0">
+            <button onclick="fetchOrders()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-semibold rounded-xl flex items-center space-x-2 transition-all" title="ดึงข้อมูลออเดอร์ใหม่ทันที">
+                <i class="fa-solid fa-arrows-rotate" id="sync-icon"></i>
+                <span>รีเฟรชข้อมูล</span>
+            </button>
+            <button onclick="toggleModal('confirm-clear-modal')" class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/40 text-rose-600 dark:text-rose-400 text-xs font-semibold rounded-xl flex items-center space-x-2 transition-all" title="เคลียร์ออเดอร์สำเร็จเพื่อเริ่มวันใหม่">
+                <i class="fa-solid fa-trash-can"></i>
+                <span>เคลียร์ประวัติเดลิเวอรี</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- MAIN KANBAN BOARD SYSTEM -->
+    <main class="flex-1 overflow-x-auto overflow-y-hidden p-6 min-h-0">
+        <div class="h-[calc(100vh-210px)] min-h-[500px] min-w-[1200px] grid grid-cols-4 gap-5">
+            
+            <!-- COLUMN 1: BILLED (ลงบิลแล้ว) -->
+            <div class="flex flex-col h-full bg-slate-100/70 dark:bg-slate-900/40 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 p-4 min-h-0">
+                <div class="flex items-center justify-between mb-4 flex-none">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                        <h2 class="font-bold text-sm tracking-wide text-slate-700 dark:text-slate-300">ลงบิลแล้ว (BILLED)</h2>
+                    </div>
+                    <span class="bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 text-xs font-bold px-2.5 py-1 rounded-full" id="badge-billed">0</span>
+                </div>
+                <div class="flex-1 overflow-y-auto space-y-3 pr-1 min-h-0" id="col-billed">
+                    <!-- Cards will render here dynamically -->
+                </div>
+            </div>
+
+            <!-- COLUMN 2: COOKING (กำลังปรุง) -->
+            <div class="flex flex-col h-full bg-slate-100/70 dark:bg-slate-900/40 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 p-4 min-h-0">
+                <div class="flex items-center justify-between mb-4 flex-none">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                        <h2 class="font-bold text-sm tracking-wide text-slate-700 dark:text-slate-300">กำลังปรุง (COOKING)</h2>
+                    </div>
+                    <span class="bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 text-xs font-bold px-2.5 py-1 rounded-full" id="badge-cooking">0</span>
+                </div>
+                <div class="flex-1 overflow-y-auto space-y-3 pr-1 min-h-0" id="col-cooking">
+                    <!-- Cards will render here dynamically -->
+                </div>
+            </div>
+
+            <!-- COLUMN 3: READY TO SERVE (รอส่ง) -->
+            <div class="flex flex-col h-full bg-slate-100/70 dark:bg-slate-900/40 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 p-4 min-h-0">
+                <div class="flex items-center justify-between mb-4 flex-none">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <h2 class="font-bold text-sm tracking-wide text-slate-700 dark:text-slate-300">รอส่ง / รอไรเดอร์ (READY)</h2>
+                    </div>
+                    <span class="bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 text-xs font-bold px-2.5 py-1 rounded-full" id="badge-ready">0</span>
+                </div>
+                <div class="flex-1 overflow-y-auto space-y-3 pr-1 min-h-0" id="col-ready">
+                    <!-- Cards will render here dynamically -->
+                </div>
+            </div>
+
+            <!-- COLUMN 4: COMPLETED (เสร็จสิ้นวันนี้) -->
+            <div class="flex flex-col h-full bg-slate-100/70 dark:bg-slate-900/40 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 p-4 min-h-0">
+                <div class="flex items-center justify-between mb-4 flex-none">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+                        <h2 class="font-bold text-sm tracking-wide text-slate-700 dark:text-slate-300">เสร็จสิ้นวันนี้ (COMPLETED)</h2>
+                    </div>
+                    <span class="bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold px-2.5 py-1 rounded-full" id="badge-completed">0</span>
+                </div>
+                <div class="flex-1 overflow-y-auto space-y-3 pr-1 min-h-0" id="col-completed">
+                    <!-- Cards will render here dynamically -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- CONFIGURATION & APP SETTING MODAL -->
+    <div id="config-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl w-[90%] max-w-lg shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 animate-scale-in">
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-gear text-amber-500 text-lg"></i>
+                    <h3 class="font-bold text-lg">ตั้งค่าการเชื่อมต่อและแจ้งเตือน</h3>
+                </div>
+                <button onclick="toggleModal('config-modal')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 space-y-5">
+                <!-- Sync API section -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-2 uppercase">Google Apps Script Web App URL</label>
+                    <input type="text" id="api-url-input" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 text-sm border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-amber-500 dark:focus:border-amber-500 transition-all">
+                    <p class="text-[10px] text-slate-400 mt-1.5">วาง URL ของ Google Apps Script ที่ลงเว็บแอปแล้วที่นี่ เพื่อดึงข้อมูลประวัติเดลิเวอรีจริง</p>
+                </div>
+
+                <!-- Sync Frequency Slider -->
+                <div>
+                    <div class="flex justify-between text-xs font-bold text-slate-500 mb-2">
+                        <span>ความถี่การรีเฟรชออเดอร์</span>
+                        <span id="sync-interval-label" class="text-amber-500">15 วินาที</span>
+                    </div>
+                    <input type="range" id="sync-interval-range" min="10" max="120" step="5" value="15" oninput="updateSyncIntervalLabel(this.value)" class="w-full accent-amber-500">
+                </div>
+
+                <!-- Text-to-Speech Controls -->
+                <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-700 dark:text-slate-300">ระบบเสียงพูดภาษาไทย (Thai TTS)</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="tts-enabled-toggle" checked class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500"></div>
+                        </label>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <label class="block text-slate-400 mb-1">ความเร็ว (Speed)</label>
+                            <input type="range" id="tts-rate-range" min="0.5" max="1.5" step="0.1" value="0.9" class="w-full accent-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 mb-1">โทนเสียง (Pitch)</label>
+                            <input type="range" id="tts-pitch-range" min="0.5" max="1.5" step="0.1" value="1.0" class="w-full accent-amber-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio Sound Testing -->
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-slate-500">ทดสอบเสียงเอฟเฟกต์แอปพลิเคชัน</span>
+                    <div class="flex space-x-2">
+                        <button onclick="playChimeSound('new-order')" class="px-2.5 py-1.5 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 text-[10px] font-bold rounded-lg border border-blue-100 dark:border-blue-900/30">
+                            เสียงกริ่งใหม่
+                        </button>
+                        <button onclick="testThaiSpeech()" class="px-2.5 py-1.5 bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 text-[10px] font-bold rounded-lg border border-purple-100 dark:border-purple-900/30">
+                            ทดสอบอ่านออกเสียงออเดอร์ใหม่
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 flex justify-end space-x-3">
+                <button onclick="toggleModal('config-modal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-semibold rounded-xl">ยกเลิก</button>
+                <button onclick="saveConfiguration()" class="px-5 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold rounded-xl shadow-lg shadow-amber-500/20">บันทึกค่า</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM DATE RANGE FILTER MODAL -->
+    <div id="custom-date-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl w-[90%] max-w-sm shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 animate-scale-in">
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <h3 class="font-bold text-base flex items-center space-x-2">
+                    <i class="fa-regular fa-calendar-days text-amber-500"></i>
+                    <span>ระบุวันที่สแกนออเดอร์</span>
+                </h3>
+                <button onclick="toggleModal('custom-date-modal')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i class="fa-solid fa-xmark text-base"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">กรุณาระบุวันที่ที่ต้องการสืบค้น</label>
+                    <input type="date" id="custom-date-picker" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 text-sm border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-amber-500 dark:focus:border-amber-500">
+                </div>
+            </div>
+            <div class="p-6 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 flex justify-end space-x-3">
+                <button onclick="toggleModal('custom-date-modal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-semibold rounded-xl">ยกเลิก</button>
+                <button onclick="applyCustomDate()" class="px-5 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold rounded-xl shadow-lg shadow-amber-500/20">ตกลง</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM CONFIRMATION DIALOG -->
+    <div id="confirm-clear-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl w-[90%] max-w-sm shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 animate-scale-in">
+            <div class="p-6 text-center">
+                <div class="w-16 h-16 bg-rose-100 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">ยืนยันการเคลียร์ประวัติ?</h3>
+                <p class="text-xs text-slate-400 dark:text-slate-500">คุณแน่ใจหรือไม่ที่จะลบรายการอาหารที่จัดส่งเสร็จสมบูรณ์วันนี้ออกจากบอร์ด? การกระทำนี้ไม่สามารถยกเลิกได้</p>
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 flex justify-end space-x-3">
+                <button onclick="toggleModal('confirm-clear-modal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-semibold rounded-xl">ยกเลิก</button>
+                <button onclick="clearCompletedAction()" class="px-5 py-2 bg-rose-500 hover:bg-rose-600 text-white text-xs font-semibold rounded-xl">ล้างประวัติเสร็จสิ้น</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUMMARY POPUP MODAL (แสดงรายการสรุปสะสมเมนูด่วน) -->
+    <div id="summary-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl w-[90%] max-w-md shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 animate-scale-in animate-duration-200">
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-amber-50/50 dark:bg-amber-950/20">
+                <div class="flex items-center space-x-2.5">
+                    <div class="bg-amber-500 text-white p-2 rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-fire-burner text-lg animate-pulse"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">สรุปรายการอาหารสะสมทั้งวัน</h3>
+                        <p class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">รวมจำนวนออเดอร์ทั้งหมดของวัน</p>
+                    </div>
+                </div>
+                <button onclick="toggleModal('summary-modal')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex justify-between items-center text-xs text-slate-400 dark:text-slate-500">
+                    <span>รายการอาหารสะสมทั้งหมดของวัน:</span>
+                    <span class="font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/30 px-2 py-0.5 rounded-lg border border-amber-100/50 dark:border-amber-950/30" id="popup-total-text">0 เมนู / 0 จาน</span>
+                </div>
+                <div class="overflow-y-auto max-h-[40vh] space-y-2 pr-1" id="popup-summary-list">
+                    <!-- Dynamic popup list rows -->
+                </div>
+            </div>
+            <div class="p-6 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 flex justify-end">
+                <button onclick="toggleModal('summary-modal')" class="px-5 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-semibold rounded-xl">ปิดหน้าจอ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CORE SYSTEM SCRIPTS -->
+    <script>
+        let orders = [];
+        let dateFilterMode = 'today'; // 'today', 'all', 'custom'
+        let customDateValue = '';
+        let sortOrder = 'lifo'; // Default to 'lifo' (newest first)
+        let isFirstLoad = true; // Lock sound triggers on initial loading cycle
+
+        // Persist checkbox ticked items map
+        let itemTickedMap = JSON.parse(localStorage.getItem('kds_item_ticked_map') || '{}');
+
+        // Default Google Apps Script URL
+        const DEFAULT_URL = "https://script.google.com/macros/s/AKfycbxdyOTzgOVeeysPo1kcW8A-VRDihNkqrrp1qNhrOWrv8041rZsvzNn0-1y-RCnsHme2/exec";
+
+        // Settings stored in LocalStorage
+        let config = {
+            apiUrl: localStorage.getItem('klongPinto_apiUrl') || DEFAULT_URL,
+            syncInterval: parseInt(localStorage.getItem('klongPinto_syncInterval')) || 15,
+            ttsEnabled: localStorage.getItem('klongPinto_ttsEnabled') !== 'false',
+            ttsRate: parseFloat(localStorage.getItem('klongPinto_ttsRate')) || 0.9,
+            ttsPitch: parseFloat(localStorage.getItem('klongPinto_ttsPitch')) || 1.0,
+            theme: localStorage.getItem('klongPinto_theme') || 'light'
+        };
+
+        // Application Timers
+        let syncTimer = null;
+        let clockTimer = null;
+
+        // Web Audio Context for Premium Sound Synths
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Auto-unlock AudioContext on first user interaction to comply with browser autoplay policies
+        function unlockAudioContext() {
+            initAudio();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume().then(() => {
+                    console.log("AudioContext resumed successfully.");
+                    window.removeEventListener('click', unlockAudioContext);
+                    window.removeEventListener('touchstart', unlockAudioContext);
+                });
+            } else if (audioCtx && audioCtx.state === 'running') {
+                window.removeEventListener('click', unlockAudioContext);
+                window.removeEventListener('touchstart', unlockAudioContext);
+            }
+        }
+        window.addEventListener('click', unlockAudioContext);
+        window.addEventListener('touchstart', unlockAudioContext);
+
+        // Beautiful Dynamic Chime Synths using Web Audio API (Highly Premium)
+        function playChimeSound(type) {
+            try {
+                initAudio();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'new-order') {
+                    // Play sweet ascending high-frequency major chord (New Order Only)
+                    const freqs = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                    freqs.forEach((freq, index) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now + index * 0.08);
+                        
+                        gain.gain.setValueAtTime(0.15, now + index * 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.08 + 0.6);
+                        
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        
+                        osc.start(now + index * 0.08);
+                        osc.stop(now + index * 0.08 + 0.6);
+                    });
+                }
+            } catch (error) {
+                console.log('Audio error:', error);
+            }
+        }
+
+        // Thai Text-to-Speech (TTS) Engine - SPEAKS SPECIFIC CLEAN MESSAGE
+        function speakThaiMessage(text) {
+            if (!config.ttsEnabled) return;
+            try {
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'th-TH';
+                utterance.rate = config.ttsRate;
+                utterance.pitch = config.ttsPitch;
+                
+                const voices = window.speechSynthesis.getVoices();
+                const thaiVoice = voices.find(voice => voice.lang.includes('TH') || voice.lang.includes('th'));
+                if (thaiVoice) {
+                    utterance.voice = thaiVoice;
+                }
+                
+                window.speechSynthesis.speak(utterance);
+            } catch (e) {
+                console.log('TTS Error:', e);
+            }
+        }
+
+        // Test Speech trigger for Settings dialog
+        function testThaiSpeech() {
+            speakThaiMessage("มีออเดอร์เข้ามาใหม่ครับ");
+        }
+
+        // Clock logic
+        function runClock() {
+            const timeEl = document.getElementById('live-time');
+            const dateEl = document.getElementById('live-date');
+            
+            const formatter = () => {
+                const now = new Date();
+                timeEl.innerText = now.toLocaleTimeString('th-TH', { hour12: false });
+                
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                dateEl.innerText = now.toLocaleDateString('th-TH', options);
+            };
+            
+            formatter();
+            clockTimer = setInterval(formatter, 1000);
+        }
+
+        // Handle Dark / Light mode switching
+        function initTheme() {
+            if (config.theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                config.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                config.theme = 'dark';
+            }
+            localStorage.setItem('klongPinto_theme', config.theme);
+        }
+
+        // UI Modals handler
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            if (modal.classList.contains('hidden')) {
+                if (id === 'config-modal') {
+                    document.getElementById('api-url-input').value = config.apiUrl;
+                    document.getElementById('sync-interval-range').value = config.syncInterval;
+                    document.getElementById('sync-interval-label').innerText = config.syncInterval + ' วินาที';
+                    document.getElementById('tts-enabled-toggle').checked = config.ttsEnabled;
+                    document.getElementById('tts-rate-range').value = config.ttsRate;
+                    document.getElementById('tts-pitch-range').value = config.ttsPitch;
+                }
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        // Synchronize setup values with App states
+        function updateSyncIntervalLabel(val) {
+            document.getElementById('sync-interval-label').innerText = val + ' วินาที';
+        }
+
+        function saveConfiguration() {
+            const newUrl = document.getElementById('api-url-input').value.trim();
+            const newInterval = parseInt(document.getElementById('sync-interval-range').value);
+            const newTts = document.getElementById('tts-enabled-toggle').checked;
+            const newRate = parseFloat(document.getElementById('tts-rate-range').value);
+            const newPitch = parseFloat(document.getElementById('tts-pitch-range').value);
+
+            config.apiUrl = newUrl;
+            config.syncInterval = newInterval;
+            config.ttsEnabled = newTts;
+            config.ttsRate = newRate;
+            config.ttsPitch = newPitch;
+
+            localStorage.setItem('klongPinto_apiUrl', newUrl);
+            localStorage.setItem('klongPinto_syncInterval', newInterval);
+            localStorage.setItem('klongPinto_ttsEnabled', newTts);
+            localStorage.setItem('klongPinto_ttsRate', newRate);
+            localStorage.setItem('klongPinto_ttsPitch', newPitch);
+
+            toggleModal('config-modal');
+            startSyncTimer();
+            fetchOrders();
+        }
+
+        // Safe parser to handle Thai BE format year 25xx and string types properly
+        function parseSafeDate(dateVal) {
+            if (!dateVal) return new Date();
+            if (dateVal instanceof Date) return dateVal;
+            
+            let dateStr = String(dateVal).trim();
+            
+            let matchBE = dateStr.match(/\b(25\d{2})\b/);
+            if (matchBE) {
+                let ceYear = parseInt(matchBE[1]) - 543;
+                dateStr = dateStr.replace(matchBE[1], String(ceYear));
+            }
+            
+            let parsed = new Date(dateStr);
+            if (isNaN(parsed.getTime())) {
+                let parts = dateStr.split(/[\/\-\s]/);
+                if (parts.length >= 3) {
+                    if (parts[0].length === 4) {
+                        parsed = new Date(parts[0], parts[1] - 1, parts[2]);
+                    } else if (parts[2].length === 4) {
+                        parsed = new Date(parts[2], parts[1] - 1, parts[0]);
+                    }
+                }
+            }
+            
+            return isNaN(parsed.getTime()) ? new Date() : parsed;
+        }
+
+        // Helper: Format Date string
+        function getLocalDateString(timestamp) {
+            const d = new Date(timestamp);
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        // ทำความสะอาดและจำกัดขนาดออเดอร์สะสมไม่ให้เกิน 300 รายการ ป้องกัน LocalStorage เต็มและช้า
+        function pruneOldOrders() {
+            if (orders.length > 300) {
+                orders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                orders = orders.slice(0, 300);
+            }
+        }
+
+        // Save simulated or loaded orders to LocalStorage
+        function saveOrdersToStorage() {
+            pruneOldOrders();
+            try {
+                localStorage.setItem('klongPinto_orders_data', JSON.stringify(orders));
+            } catch (e) {
+                console.log("LocalStorage write failed, pruning cache further...", e);
+                orders = orders.slice(0, 100);
+                localStorage.setItem('klongPinto_orders_data', JSON.stringify(orders));
+            }
+        }
+
+        // Load existing orders from LocalStorage
+        function loadOrdersFromStorage() {
+            const stored = localStorage.getItem('klongPinto_orders_data');
+            if (stored) {
+                try {
+                    orders = JSON.parse(stored);
+                    orders.forEach(o => {
+                        o.timestamp = parseSafeDate(o.timestamp);
+                        o.updatedAt = parseSafeDate(o.updatedAt);
+                    });
+                } catch (e) {
+                    orders = [];
+                }
+            } else {
+                orders = [];
+                saveOrdersToStorage();
+            }
+        }
+
+        // Sync and Fetch logic
+        function startSyncTimer() {
+            if (syncTimer) clearInterval(syncTimer);
+            syncTimer = setInterval(fetchOrders, config.syncInterval * 1000);
+        }
+
+        // Pull orders from External Google Sheets URL
+        async function fetchOrders() {
+            const syncIcon = document.getElementById('sync-icon');
+            const syncStatus = document.getElementById('sync-status');
+            
+            if (syncIcon) syncIcon.classList.add('animate-spin');
+            
+            if (!config.apiUrl) {
+                if (syncIcon) syncIcon.classList.remove('animate-spin');
+                if (syncStatus) syncStatus.innerText = "กรุณาตั้งค่า URL การเชื่อมต่อ";
+                renderBoard();
+                return;
+            }
+
+            try {
+                if (syncStatus) syncStatus.innerText = "";
+                const response = await fetch(config.apiUrl);
+                if (!response.ok) throw new Error('Network response not ok');
+                const data = await response.json();
+                
+                processExternalSync(data);
+                if (syncStatus) syncStatus.innerText = "";
+            } catch (error) {
+                console.log("Fetch failed, keeping local memory orders:", error);
+                if (syncStatus) syncStatus.innerText = "ตัดการเชื่อมต่อ (ใช้ออฟไลน์แทน)";
+            } finally {
+                if (syncIcon) syncIcon.classList.remove('animate-spin');
+                applyFiltersAndRender();
+            }
+        }
+
+        // Helper to format Item from various structures safely
+        function parseItemData(item) {
+            if (typeof item === 'object' && item !== null) {
+                const name = item.name || item.menu || item.itemName || item.title || '';
+                const qty = item.qty || item.quantity || item.amount || '';
+                if (!name) return JSON.stringify(item);
+                return qty ? `${name} x ${qty}` : name;
+            }
+            return String(item).trim();
+        }
+
+        // Send status back to Google Sheets Web App to achieve true multi-device sync
+        function sendSyncStatusToSheets(orderId, newStatus) {
+            if (!config.apiUrl) return;
+            
+            // ส่งอัปเดตสถานะแบบ POST ไปหา Google Apps Script ส่วนกลางของคุณโดยตรง
+            fetch(config.apiUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'text/plain'
+                },
+                body: JSON.stringify({
+                    action: 'updateStatus',
+                    id: orderId,
+                    status: newStatus
+                })
+            })
+            .then(() => {
+                console.log(`Cloud status updated: ${orderId} -> ${newStatus}`);
+            })
+            .catch(err => {
+                console.error("Cloud status sync failed:", err);
+            });
+        }
+
+        // Process Incoming Cloud Data safely with O(1) Lookups & Forced Takeaway Delivery Types
+        function processExternalSync(incomingList) {
+            let hasNew = false;
+            const todayStr = getLocalDateString(Date.now());
+
+            // 1. กรองเฉพาะวันที่สอดคล้องกับ dateFilterMode ทันทีเพื่อความเร็ว
+            let targetIncoming = incomingList.filter(incoming => {
+                const rawDate = incoming.date || incoming.timestamp;
+                const parsedTimestamp = parseSafeDate(rawDate);
+                const orderDateStr = getLocalDateString(parsedTimestamp);
+
+                if (dateFilterMode === 'today') {
+                    return orderDateStr === todayStr;
+                } else if (dateFilterMode === 'custom') {
+                    return orderDateStr === customDateValue;
+                }
+                return true; 
+            });
+
+            // 2. จำกัดขีดสุงสุด 100 ออเดอร์เมื่อกดเลือก 'ทั้งหมด' เพื่อป้องกันเครื่องค้าง
+            if (dateFilterMode === 'all' && targetIncoming.length > 100) {
+                targetIncoming.sort((a, b) => {
+                    const dateA = parseSafeDate(a.date || a.timestamp);
+                    const dateB = parseSafeDate(b.date || b.timestamp);
+                    return dateB - dateA;
+                });
+                targetIncoming = targetIncoming.slice(0, 100);
+            }
+
+            // สแกนและจัดโครงสร้างข้อมูลออเดอร์ใหม่ทั้งหมดจาก Google Sheets
+            const parsedIncomingOrders = targetIncoming.map(incoming => {
+                const realOrderNo = incoming.orderNo || incoming.orderId || incoming.id || '';
+                const incomingId = incoming.id || incoming.orderId || realOrderNo || '';
+                
+                let parsedItems = [];
+                if (Array.isArray(incoming.items)) {
+                    parsedItems = incoming.items.map(item => parseItemData(item));
+                } else if (typeof incoming.items === 'string') {
+                    try {
+                        const decoded = JSON.parse(incoming.items);
+                        if (Array.isArray(decoded)) {
+                            parsedItems = decoded.map(item => parseItemData(item));
+                        } else {
+                            parsedItems = incoming.items.split(',').map(i => parseItemData(i));
+                        }
+                    } catch (e) {
+                        parsedItems = incoming.items.split(',').map(i => parseItemData(i));
+                    }
+                } else if (incoming.items && typeof incoming.items === 'object') {
+                    parsedItems = [parseItemData(incoming.items)];
+                }
+
+                const rawDate = incoming.date || incoming.timestamp;
+                const parsedTimestamp = parseSafeDate(rawDate);
+
+                let orderType = incoming.type || "กลับบ้าน";
+                if (orderType === "ทานที่ร้าน" || orderType === "Dine In" || orderType === " Dine In") {
+                    orderType = "กลับบ้าน";
+                }
+
+                return {
+                    id: incomingId,
+                    orderNo: realOrderNo,
+                    table: incoming.table || (incoming.customer && incoming.customer.name) || "ลูกค้าเดลิเวอรี",
+                    type: orderType,
+                    items: parsedItems,
+                    note: incoming.note || (incoming.customer && incoming.customer.address) || incoming.notes || "-",
+                    status: incoming.status || 'billed',
+                    timestamp: parsedTimestamp,
+                    updatedAt: new Date()
+                };
+            });
+
+            // เปรียบเทียบรหัสออเดอร์เดิมเพื่อตรวจจับออเดอร์ใหม่ (Genuine New Orders) และส่งเสียงเตือน
+            const currentOrderIds = new Set(orders.map(o => o.id));
+            parsedIncomingOrders.forEach(incoming => {
+                if (incoming.status === 'billed' && !currentOrderIds.has(incoming.id)) {
+                    hasNew = true;
+                }
+            });
+
+            // 🌟 [ระบบอ้างอิง Google Sheets เป็นหลัก]:
+            // แทนการดึงเฉพาะออเดอร์ใหม่ เราจะทำการเขียนทับข้อมูลในช่วงวันที่ถูกเลือกด้วยรายการที่เพิ่งดึงมาจาก Google Sheet ทั้งหมด
+            // ทำให้หากออเดอร์บน Google Sheet ถูกลบ หรือ แก้ไขข้อมูล บอร์ด KDS จะอัปเดตหายไปหรือแก้ไขตามทันทีใน 15 วินาที
+            if (dateFilterMode === 'today') {
+                const nonTodayOrders = orders.filter(o => getLocalDateString(o.timestamp) !== todayStr);
+                const freshTodayOrders = parsedIncomingOrders.filter(o => getLocalDateString(o.timestamp) === todayStr);
+                orders = [...nonTodayOrders, ...freshTodayOrders];
+            } else if (dateFilterMode === 'custom') {
+                const nonCustomOrders = orders.filter(o => getLocalDateString(o.timestamp) !== customDateValue);
+                const freshCustomOrders = parsedIncomingOrders.filter(o => getLocalDateString(o.timestamp) === customDateValue);
+                orders = [...nonCustomOrders, ...freshCustomOrders];
+            } else {
+                orders = parsedIncomingOrders;
+            }
+
+            saveOrdersToStorage();
+
+            // ส่งเสียงเตือนเฉพาะออเดอร์คีย์สั่งเข้ามาใหม่ของวันนี้จริง ๆ และต้องไม่ใช่การโหลดครั้งแรกของหน้าจอ KDS
+            if (hasNew && !isFirstLoad) {
+                playChimeSound('new-order');
+                speakThaiMessage("มีออเดอร์เข้ามาใหม่ครับ");
+            }
+
+            if (isFirstLoad) {
+                isFirstLoad = false;
+            }
+        }
+
+        // Toggle individual food item ticked state (Ticking off specific food dish inside card)
+        function toggleItemTicked(orderId, itemName) {
+            const tickKey = `${orderId}_${itemName}`;
+            itemTickedMap[tickKey] = !itemTickedMap[tickKey];
+            localStorage.setItem('kds_item_ticked_map', JSON.stringify(itemTickedMap));
+            applyFiltersAndRender();
+        }
+
+        // Handle card transitions
+        function changeOrderStatus(orderId, newStatus) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = newStatus;
+                order.updatedAt = new Date();
+                
+                // Save status changes in local persistence map
+                const localStatusMap = JSON.parse(localStorage.getItem('kds_status_map') || '{}');
+                localStatusMap[orderId] = newStatus;
+                localStorage.setItem('kds_status_map', JSON.stringify(localStatusMap));
+
+                saveOrdersToStorage();
+                
+                // ไม่มีทั้ง playChimeSound หรือ speakThaiMessage ทำงานในส่วนนี้ เพื่อไม่ให้เกิดเสียงรบกวนครัวขณะเปลี่ยนแท็บปรุง
+
+                // ส่งข้อมูลสถานะใหม่กลับไปบันทึกลง Google Sheet กลาง เพื่อให้เครื่องอื่น ๆ ซิงค์ตรงกัน
+                sendSyncStatusToSheets(orderId, newStatus);
+                
+                applyFiltersAndRender();
+            }
+        }
+
+        // Clear completed history action triggered from modal
+        function clearCompletedAction() {
+            orders = orders.filter(o => o.status !== 'completed');
+            
+            localStorage.removeItem('kds_status_map');
+            localStorage.removeItem('kds_item_ticked_map');
+            itemTickedMap = {};
+            
+            saveOrdersToStorage();
+            toggleModal('confirm-clear-modal');
+            applyFiltersAndRender();
+        }
+
+        // Set Filter parameters
+        function setDateRange(mode) {
+            dateFilterMode = mode;
+            
+            document.getElementById('date-btn-today').className = "px-3 py-1.5 rounded-lg transition-all text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+            document.getElementById('date-btn-all').className = "px-3 py-1.5 rounded-lg transition-all text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+            document.getElementById('date-btn-custom').className = "px-3 py-1.5 rounded-lg transition-all text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center space-x-1";
+
+            if (mode === 'today') {
+                document.getElementById('date-btn-today').className = "px-3 py-1.5 rounded-lg transition-all text-amber-600 bg-white dark:bg-slate-900 shadow-sm";
+                document.getElementById('custom-date-label').innerText = "ระบุวัน";
+            } else if (mode === 'all') {
+                document.getElementById('date-btn-all').className = "px-3 py-1.5 rounded-lg transition-all text-amber-600 bg-white dark:bg-slate-900 shadow-sm";
+                document.getElementById('custom-date-label').innerText = "ระบุวัน";
+            }
+            
+            orders = [];
+            fetchOrders();
+        }
+
+        function applyCustomDate() {
+            const dateVal = document.getElementById('custom-date-picker').value;
+            if (!dateVal) {
+                return;
+            }
+            customDateValue = dateVal;
+            dateFilterMode = 'custom';
+            
+            document.getElementById('date-btn-today').className = "px-3 py-1.5 rounded-lg transition-all text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+            document.getElementById('date-btn-all').className = "px-3 py-1.5 rounded-lg transition-all text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+            document.getElementById('date-btn-custom').className = "px-3 py-1.5 rounded-lg transition-all text-amber-600 bg-white dark:bg-slate-900 shadow-sm flex items-center space-x-1";
+            
+            const dateParts = dateVal.split('-');
+            if (dateParts.length === 3) {
+                document.getElementById('custom-date-label').innerText = `${dateParts[2]}/${dateParts[1]}`;
+            }
+
+            toggleModal('custom-date-modal');
+            
+            orders = [];
+            fetchOrders();
+        }
+
+        function setSortOrder(order) {
+            sortOrder = order;
+            document.getElementById('sort-btn-fifo').className = "px-3 py-1.5 rounded-lg transition-all text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+            document.getElementById('sort-btn-lifo').className = "px-3 py-1.5 rounded-lg transition-all text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+
+            if (order === 'fifo') {
+                document.getElementById('sort-btn-fifo').className = "px-3 py-1.5 rounded-lg transition-all text-amber-600 bg-white dark:bg-slate-900 shadow-sm";
+            } else {
+                document.getElementById('sort-btn-lifo').className = "px-3 py-1.5 rounded-lg transition-all text-amber-600 bg-white dark:bg-slate-900 shadow-sm";
+            }
+            applyFiltersAndRender();
+        }
+
+        function toggleMenuSummaryCollapse() {
+            isSummaryCollapsed = !isSummaryCollapsed;
+            const container = document.getElementById('aggregated-menu-list');
+            const icon = document.getElementById('collapse-summary-icon');
+            const text = document.getElementById('collapse-summary-text');
+            
+            if (isSummaryCollapsed) {
+                container.classList.add('hidden');
+                text.innerText = "แสดงแถบสรุป";
+                icon.className = "fa-solid fa-chevron-down";
+            } else {
+                container.classList.remove('hidden');
+                text.innerText = "ย่อแถบสรุป";
+                icon.className = "fa-solid fa-chevron-up";
+            }
+        }
+
+        // Apply filters & render
+        function applyFiltersAndRender() {
+            const searchQuery = document.getElementById('search-filter').value.toLowerCase().trim();
+            const todayStr = getLocalDateString(Date.now());
+
+            // 1. Filter original list by date and query
+            let filtered = orders.filter(o => {
+                // Date logic
+                const orderDateStr = getLocalDateString(o.timestamp);
+                if (dateFilterMode === 'today' && orderDateStr !== todayStr) return false;
+                if (dateFilterMode === 'custom' && orderDateStr !== customDateValue) return false;
+
+                // Search logic
+                if (searchQuery) {
+                    const matchesTable = o.table.toLowerCase().includes(searchQuery);
+                    const matchesOrderNo = o.orderNo.toLowerCase().includes(searchQuery);
+                    const matchesNote = o.note.toLowerCase().includes(searchQuery);
+                    const matchesItems = o.items.some(item => {
+                        const strItem = typeof item === 'object' ? JSON.stringify(item) : String(item);
+                        return strItem.toLowerCase().includes(searchQuery);
+                    });
+                    return matchesTable || matchesOrderNo || matchesNote || matchesItems;
+                }
+                return true;
+            });
+
+            // 2. Sort sequence
+            filtered.sort((a, b) => {
+                const timeA = new Date(a.timestamp).getTime();
+                const timeB = new Date(b.timestamp).getTime();
+                return sortOrder === 'fifo' ? timeA - timeB : timeB - timeA;
+            });
+
+            // Render Kanban and Header metrics
+            renderBoard(filtered);
+            aggregateMenuStats(filtered);
+        }
+
+        // Helper: Format elapsed duration nicely
+        function getElapsedString(timestamp) {
+            const now = new Date();
+            const diffMs = now - new Date(timestamp);
+            const diffMin = Math.floor(diffMs / 60000);
+            
+            if (diffMin < 1) return 'เมื่อครู่';
+            return `${diffMin} นาทีที่แล้ว`;
+        }
+
+        // Helper: Check if card violates SLA (8 Minutes warning)
+        function checkSLAViolation(timestamp, status) {
+            if (status === 'completed' || status === 'ready') return false;
+            const now = new Date();
+            const diffMs = now - new Date(timestamp);
+            const diffMin = Math.floor(diffMs / 60000);
+            return diffMin >= 8;
+        }
+
+        // Extract and summarize active menu queues (แปลงเป็นระบบ Popup แท้จริง)
+        function aggregateMenuStats(filteredList) {
+            const counts = {};
+            let totalQuantity = 0;
+            
+            filteredList.forEach(o => {
+                // 🌟 [ปรับปรุงใหม่ข้อที่ 1]: ดึงสะสมสะยอดรวมทั้งหมดของรายการอาหารของ "ทั้งวัน" 
+                // โดยไม่สนใจและไม่แยกแยะสถานะใด ๆ (นับรวมทั้งหมดแม้จะส่งออกเสร็จสิ้นไปแล้วก็ตาม)
+                o.items.forEach(item => {
+                    const textItem = typeof item === 'object' ? parseItemData(item) : String(item);
+                    const match = textItem.match(/(.+?)(?:\s*x\s*(\d+))?$/);
+                    if (match) {
+                        const name = match[1].trim();
+                        const qty = match[2] ? parseInt(match[2]) : 1;
+                        counts[name] = (counts[name] || 0) + qty;
+                        totalQuantity += qty;
+                    }
+                });
+            });
+
+            const summaryContainer = document.getElementById('aggregated-menu-list');
+            const popupSummaryList = document.getElementById('popup-summary-list');
+            const popupTotalText = document.getElementById('popup-total-text');
+
+            const totalDistinctMenus = Object.keys(counts).length;
+
+            if (totalDistinctMenus === 0) {
+                summaryContainer.innerHTML = `<span class="text-slate-400 text-xs font-light">ไม่มีรายการอาหารค้างปรุงในขณะนี้</span>`;
+                if (popupSummaryList) popupSummaryList.innerHTML = `<div class="text-center text-slate-400 text-xs py-8">ไม่มีรายการอาหารค้างปรุง</div>`;
+                if (popupTotalText) popupTotalText.innerText = `0 เมนู / 0 กล่อง`;
+                return;
+            }
+
+            // สร้างปุ่มสรุปยอดแสดงผลที่จุดสีเขียว
+            summaryContainer.innerHTML = `
+                <button onclick="openSummaryModal()" class="flex items-center space-x-2.5 bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/20 dark:hover:bg-amber-900/20 border border-amber-200 dark:border-amber-800/60 px-3 py-1.5 rounded-xl transition-all duration-200 group shadow-sm shrink-0">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                    </span>
+                    <span class="text-xs font-semibold text-amber-800 dark:text-amber-400 flex items-center space-x-1">
+                        <span>ยอดออเดอร์สะสมวันนี้:</span>
+                        <strong class="text-slate-700 dark:text-slate-200 font-bold">${totalDistinctMenus} เมนู (${totalQuantity} กล่อง)</strong> 
+                    </span>
+                    <span class="text-[10px] bg-amber-500 hover:bg-amber-600 text-white font-bold px-2 py-0.5 rounded-lg flex items-center space-x-1 transition-colors">
+                        <span>ดูตารางสรุป</span>
+                        <i class="fa-solid fa-chart-simple text-[8px]"></i>
+                    </span>
+                </button>
+            `;
+
+            // เตรียมข้อมูลสำหรับ Popup รายชื่ออาหารสะสม
+            let popupHTML = '';
+            Object.entries(counts).forEach(([menu, qty]) => {
+                popupHTML += `
+                    <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-850/60 border border-slate-100 dark:border-slate-800/50 rounded-2xl shadow-sm">
+                        <span class="font-semibold text-slate-800 dark:text-slate-200 text-xs sm:text-sm leading-tight">${menu}</span>
+                        <span class="bg-amber-500 text-white font-bold text-xs px-3 py-1 rounded-xl shadow-md shadow-amber-500/10 flex-none">${qty} กล่อง</span>
+                    </div>
+                `;
+            });
+
+            if (popupSummaryList) popupSummaryList.innerHTML = popupHTML;
+            if (popupTotalText) popupTotalText.innerText = `${totalDistinctMenus} เมนู / ${totalQuantity} กล่อง`;
+        }
+
+        function openSummaryModal() {
+            toggleModal('summary-modal');
+        }
+
+        // Render actual board elements
+        function renderBoard(targetList = null) {
+            const list = targetList || orders;
+
+            const colBilled = document.getElementById('col-billed');
+            const colCooking = document.getElementById('col-cooking');
+            const colReady = document.getElementById('col-ready');
+            const colCompleted = document.getElementById('col-completed');
+
+            colBilled.innerHTML = '';
+            colCooking.innerHTML = '';
+            colReady.innerHTML = '';
+            colCompleted.innerHTML = '';
+
+            let countBilled = 0, countCooking = 0, countReady = 0, countCompleted = 0;
+
+            // จัดกลุ่มเพื่อแสดงผลประวัติเสร็จสิ้นจำกัดเฉพาะ 15 รายการล่าสุด เพื่อความลื่นไหล
+            const completedRenderList = list
+                .filter(o => o.status === 'completed')
+                .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                .slice(0, 15);
+            
+            const completedRenderIds = new Set(completedRenderList.map(o => o.id));
+
+            list.forEach(o => {
+                const isViolatingSLA = checkSLAViolation(o.timestamp, o.status);
+                const elapsedStr = getElapsedString(o.timestamp);
+                
+                let actionBtnHTML = '';
+                let statusBadgeStyle = '';
+                let containerClass = "p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800/80 bg-white dark:bg-slate-900 hover:shadow-md transition-all duration-200";
+                
+                if (isViolatingSLA) {
+                    containerClass += " sla-alert-card";
+                }
+
+                if (o.status === 'billed') {
+                    countBilled++;
+                    statusBadgeStyle = "bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400";
+                    actionBtnHTML = `
+                        <button onclick="changeOrderStatus('${o.id}', 'cooking')" class="flex-1 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold text-xs rounded-xl shadow-md shadow-amber-500/10 flex items-center justify-center space-x-2 transition-all">
+                            <i class="fa-solid fa-fire"></i>
+                            <span>รับออเดอร์ปรุง</span>
+                        </button>
+                    `;
+                } else if (o.status === 'cooking') {
+                    countCooking++;
+                    statusBadgeStyle = "bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400";
+                    actionBtnHTML = `
+                        <div class="flex gap-2 w-full">
+                            <button onclick="changeOrderStatus('${o.id}', 'billed')" class="px-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-xl transition-all" title="ย้อนกลับ">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <button onclick="changeOrderStatus('${o.id}', 'ready')" class="flex-1 py-2 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold text-xs rounded-xl shadow-md shadow-emerald-500/10 flex items-center justify-center space-x-2 transition-all">
+                                <i class="fa-solid fa-bell"></i>
+                                <span>ปรุงเสร็จแล้ว</span>
+                            </button>
+                        </div>
+                    `;
+                } else if (o.status === 'ready') {
+                    countReady++;
+                    statusBadgeStyle = "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400";
+                    actionBtnHTML = `
+                        <div class="flex gap-2 w-full">
+                            <button onclick="changeOrderStatus('${o.id}', 'cooking')" class="px-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-xl transition-all" title="ย้อนกลับ">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <button onclick="changeOrderStatus('${o.id}', 'completed')" class="flex-1 py-2 bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white font-bold text-xs rounded-xl shadow-sm flex items-center justify-center space-x-2 transition-all">
+                                <i class="fa-solid fa-truck-ramp-box"></i>
+                                <span>จัดส่งไรเดอร์เรียบร้อย</span>
+                            </button>
+                        </div>
+                    `;
+                } else if (o.status === 'completed') {
+                    countCompleted++;
+                    statusBadgeStyle = "bg-slate-100 dark:bg-slate-850 text-slate-500 dark:text-slate-400";
+                    actionBtnHTML = `
+                        <button onclick="changeOrderStatus('${o.id}', 'ready')" class="w-full py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 font-bold text-xs rounded-lg flex items-center justify-center space-x-1 transition-all">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>ดึงกลับมาใหม่</span>
+                        </button>
+                    `;
+                    
+                    if (!completedRenderIds.has(o.id)) {
+                        return; 
+                    }
+                }
+
+                // สลักระบบติ๊กรายการอาหารแยกชิ้น (Item Ticking Checkbox) เพื่อติดตามสถานะเมนูในครัวจริง
+                let itemsListHTML = '';
+                o.items.forEach(item => {
+                    const cleanItemText = parseItemData(item);
+                    const tickKey = `${o.id}_${cleanItemText}`;
+                    const isTicked = !!itemTickedMap[tickKey];
+                    
+                    const textClass = isTicked 
+                        ? "line-through text-slate-400 dark:text-slate-500 font-light italic decoration-2 decoration-rose-500" 
+                        : "text-slate-800 dark:text-slate-200 font-semibold";
+                        
+                    const checkIcon = isTicked 
+                        ? '<i class="fa-solid fa-circle-check text-emerald-500 text-base"></i>' 
+                        : '<i class="fa-regular fa-circle text-slate-300 dark:text-slate-600 text-base hover:text-emerald-500 transition-colors"></i>';
+
+                    itemsListHTML += `
+                        <li onclick="toggleItemTicked('${o.id}', '${cleanItemText}')" class="flex items-center justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/40 last:border-0 cursor-pointer select-none group">
+                            <div class="flex items-center space-x-2.5 max-w-[95%]">
+                                <span class="shrink-0 flex items-center justify-center">${checkIcon}</span>
+                                <span class="text-sm tracking-wide transition-all duration-200 group-hover:text-amber-500 ${textClass}">${cleanItemText}</span>
+                            </div>
+                        </li>
+                    `;
+                });
+
+                const borderStyles = {
+                    'billed': 'border-l-4 border-l-blue-500',
+                    'cooking': 'border-l-4 border-l-amber-500',
+                    'ready': 'border-l-4 border-l-emerald-500',
+                    'completed': 'border-l-4 border-l-slate-400'
+                };
+
+                const cardHTML = `
+                    <div class="${containerClass} ${borderStyles[o.status]} flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start gap-2 mb-2">
+                                <div>
+                                    <h4 class="text-base font-bold tracking-tight text-slate-900 dark:text-slate-100">${o.table}</h4>
+                                    <span class="text-[10px] tracking-wider font-semibold text-slate-400 block">${o.orderNo} | ${o.type}</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold ${statusBadgeStyle}">
+                                        ${elapsedStr}
+                                    </span>
+                                    ${isViolatingSLA ? `
+                                        <span class="block text-[9px] font-bold text-rose-500 uppercase mt-1 tracking-wide animate-pulse">
+                                            ⚠️ ล่าช้า! เกิน 8 นาที
+                                        </span>
+                                    ` : ''}
+                                </div>
+                            </div>
+
+                            <ul class="my-3 space-y-1">
+                                ${itemsListHTML}
+                            </ul>
+
+                            ${o.note && o.note !== '-' ? `
+                                <div class="bg-rose-50/50 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400 p-2 rounded-xl text-xs flex items-start space-x-1.5 mb-4 border border-rose-100/50 dark:border-rose-950/40">
+                                    <i class="fa-regular fa-comment-dots mt-0.5 flex-none"></i>
+                                    <span class="font-medium">${o.note}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <div class="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between">
+                            ${actionBtnHTML}
+                        </div>
+                    </div>
+                `;
+
+                if (o.status === 'billed') colBilled.innerHTML += cardHTML;
+                else if (o.status === 'cooking') colCooking.innerHTML += cardHTML;
+                else if (o.status === 'ready') colReady.innerHTML += cardHTML;
+                else if (o.status === 'completed') colCompleted.innerHTML += cardHTML;
+            });
+
+            document.getElementById('badge-billed').innerText = countBilled;
+            document.getElementById('badge-cooking').innerText = countCooking;
+            document.getElementById('badge-ready').innerText = countReady;
+            document.getElementById('badge-completed').innerText = countCompleted;
+
+            document.getElementById('stat-billed').innerText = countBilled;
+            document.getElementById('stat-cooking').innerText = countCooking;
+            document.getElementById('stat-ready').innerText = countReady;
+            document.getElementById('stat-completed').innerText = countCompleted;
+
+            checkEmptyStates(countBilled, countCooking, countReady, countCompleted);
+        }
+
+        function checkEmptyStates(cb, cc, cr, cd) {
+            const emptyTemplate = (msg) => `
+                <div class="flex flex-col items-center justify-center py-16 text-slate-300 dark:text-slate-700">
+                    <i class="fa-solid fa-circle-check text-4xl mb-3 opacity-40"></i>
+                    <p class="text-xs font-light">${msg}</p>
+                </div>
+            `;
+            
+            if (cb === 0) document.getElementById('col-billed').innerHTML = emptyTemplate('ไม่มีออเดอร์ค้างรับบิล');
+            if (cc === 0) document.getElementById('col-cooking').innerHTML = emptyTemplate('ไม่มีออเดอร์ค้างปรุง');
+            if (cr === 0) document.getElementById('col-ready').innerHTML = emptyTemplate('ไม่มีคิวเดลิเวอรีรอส่งในขณะนี้');
+            if (cd === 0) document.getElementById('col-completed').innerHTML = emptyTemplate('ไม่มีประวัติเสร็จสิ้นวันนี้');
+        }
+
+        // Silent Refresh intervals for times/SLA refresh (every 30 seconds)
+        setInterval(() => {
+            applyFiltersAndRender();
+        }, 30000);
+
+        // System Startup
+        window.onload = function() {
+            initTheme();
+            runClock();
+            
+            document.getElementById('custom-date-picker').value = getLocalDateString(Date.now());
+            customDateValue = getLocalDateString(Date.now());
+
+            loadOrdersFromStorage();
+            
+            // ใช้คิวใหม่สุด (LIFO) ก่อนเสมอตั้งแต่เริ่มระบบ
+            setSortOrder('lifo');
+            
+            fetchOrders();
+            startSyncTimer();
+        };
+    </script>
+</body>
+</html>

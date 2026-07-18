@@ -1,14 +1,18 @@
 {
-  "name": "com.pinto.smartacc",
+  "name": "com.klongpinto.kds",
   "version": "1.0.0",
-  "description": "Smart Account App",
+  "description": "Klong Pin To KDS",
   "main": "index.js",
   "scripts": {
-    "build": "echo 'No build step required'"
+    "build": "echo 'No build step required'",
+    "icon-gen": "npx capacitor-assets generate --ios"
   },
   "dependencies": {
     "@capacitor/cli": "^5.0.0",
     "@capacitor/core": "^5.0.0",
     "@capacitor/ios": "^5.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.0"
   }
 }

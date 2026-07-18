@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14 # รันบนเครื่อง Mac บนคลาวด์ของ GitHub
+    runs-on: macos-13 # รันบนเครื่อง Mac บนคลาวด์ของ GitHub
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -13,12 +13,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-size: 18
+          node-version: 18
 
       - name: Install Dependencies
         run: |
           npm install
-          npx cap ios
 
       - name: Build Web Code and Sync
         run: |
@@ -26,22 +25,22 @@ jobs:
 
       - name: Compile iOS Project to .app
         run: |
-          # บิลด์แอปแบบไม่ใช้ใบรับรอง Apple Developer (Code Signing Disabled)
-          # เพื่อส่งออกเป็นไฟล์สำหรับ Sideload
+          # บิลด์แอปแบบไม่ใช้ใบรับรอง Apple Developer
+          # กำหนดให้ build output ไปอยู่ที่โฟลเดอร์ build นอกสุดของโปรเจกต์เพื่อให้จัดการง่าย
           xcodebuild -workspace ios/App/App.xcworkspace \
                      -scheme App \
                      -configuration Release \
                      -sdk iphoneos \
-                     CONFIGURATION_BUILD_DIR=build \
+                     CONFIGURATION_BUILD_DIR=$GITHUB_WORKSPACE/build \
                      CODE_SIGNING_ALLOWED=NO \
                      CODE_SIGNING_REQUIRED=NO \
                      clean build
 
       - name: Package .app into .ipa (The Sideload Hack)
         run: |
-          # สร้างโฟลเดอร์ Payload และนำแอปไปแพ็กเป็น .ipa
-          mkdir Payload
-          cp -r ios/App/build/App.app Payload/
+          # สร้างโฟลเดอร์ Payload และนำแอปไปแพ็กเป็น .ipa ตามมาตรฐานของ iOS
+          mkdir -p Payload
+          cp -r $GITHUB_WORKSPACE/build/App.app Payload/
           zip -r SmartAcc.ipa Payload
 
       - name: Upload IPA Artifact

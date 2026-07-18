@@ -1,46 +1,51 @@
-name: Set up Node.js
-    uses: actions/setup-node@v4 # อัปเกรดระบบจัดสภาพแวดล้อมเป็นเวอร์ชัน 4
-    with:
-      node-version: 20 # ใช้ Node.js เวอร์ชันเสถียรล่าสุด
+name: Build iOS IPA (Unsigned)
 
-  name: Install Dependencies
-    run: |
-      npm install
+on:
+  workflow_dispatch: # ช่วยให้คุณพี่กดสั่งบิลด์แอปเองได้จากหน้าเว็บ GitHub
 
-  name: Prepare iOS Platform (Auto-Check)
-    run: |
-      # ตรวจสอบแบบอัจฉริยะ: หากคุณพี่ไม่ได้อัปโหลดโฟลเดอร์ iOS ขึ้นมา ระบบจะสร้างให้ทันที
-      if [ -d "ios" ]; then
-        echo "พบโฟลเดอร์ iOS อยู่ในระบบแล้ว ทำการซิงค์ข้อมูล..."
-        npx cap sync ios
-      else
-        echo "ไม่พบโฟลเดอร์ iOS ทำการติดตั้งแพลตฟอร์ม iOS ใหม่..."
-        npx cap add ios
-        npx cap sync ios
-      fi
+jobs:
+  build:
+    runs-on: macos-14 # รันบนเครื่อง Mac บนคลาวด์ของ GitHub
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-  name: Compile iOS Project to .app
-    run: |
-      # ทำการบิลด์โค้ดแอปโดยไม่ต้องใช้ใบรับรอง Apple Developer (Code Signing Disabled)
-      # เพื่อส่งออกเป็นไฟล์สำหรับติดตั้งผ่าน SideStore / Sideload
-      xcodebuild -workspace ios/App/App.xcworkspace \
-                 -scheme App \
-                 -configuration Release \
-                 -sdk iphoneos \
-                 CONFIGURATION_BUILD_DIR=build \
-                 CODE_SIGNING_ALLOWED=NO \
-                 CODE_SIGNING_REQUIRED=NO \
-                 clean build
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-size: 18
 
-  name: Package .app into .ipa (The Sideload Hack)
-    run: |
-      # ทำการแพ็กโฟลเดอร์ App ให้กลายเป็นไฟล์ติดตั้ง .ipa สำหรับ SideStore
-      mkdir Payload
-      cp -r ios/App/build/App.app Payload/
-      zip -r SmartAcc.ipa Payload
+      - name: Install Dependencies
+        run: |
+          npm install
+          npx cap ios
 
-  name: Upload IPA Artifact
-    uses: actions/upload-artifact@v4 # อัปเกรดตัวส่งออกไฟล์เป็นเวอร์ชัน 4 (แก้ปัญหา Failed ตอนอัปโหลด)
-    with:
-      name: SmartAcc-SideStore-IPA
-      path: SmartAcc.ipa
+      - name: Build Web Code and Sync
+        run: |
+          npx cap sync ios
+
+      - name: Compile iOS Project to .app
+        run: |
+          # บิลด์แอปแบบไม่ใช้ใบรับรอง Apple Developer (Code Signing Disabled)
+          # เพื่อส่งออกเป็นไฟล์สำหรับ Sideload
+          xcodebuild -workspace ios/App/App.xcworkspace \
+                     -scheme App \
+                     -configuration Release \
+                     -sdk iphoneos \
+                     CONFIGURATION_BUILD_DIR=build \
+                     CODE_SIGNING_ALLOWED=NO \
+                     CODE_SIGNING_REQUIRED=NO \
+                     clean build
+
+      - name: Package .app into .ipa (The Sideload Hack)
+        run: |
+          # สร้างโฟลเดอร์ Payload และนำแอปไปแพ็กเป็น .ipa
+          mkdir Payload
+          cp -r ios/App/build/App.app Payload/
+          zip -r SmartAcc.ipa Payload
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SmartAcc-SideStore-IPA
+          path: SmartAcc.ipa
